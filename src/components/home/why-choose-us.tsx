@@ -1,3 +1,5 @@
+import Image from "next/image";
+import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/home/section-heading";
 import { ContentIcon } from "@/lib/utils/dynamic-icon";
@@ -20,16 +22,38 @@ export function WhyChooseUs({
         <SectionHeading title={title} />
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {items.map((item) => (
-            <div key={item.id} className="flex flex-col items-center gap-3 text-center">
-              <div className="flex size-14 items-center justify-center rounded-2xl bg-primary text-white">
-                <ContentIcon name={item.icon} className="size-6" />
-              </div>
-              <h3 className="font-display text-lg text-ink">{item.title}</h3>
-              {item.description && <p className="text-sm text-ink-soft">{item.description}</p>}
-            </div>
+            <WhyChooseUsCard key={item.id} item={item} />
           ))}
         </div>
       </Container>
     </section>
   );
+}
+
+function WhyChooseUsCard({ item }: { item: HomepageSectionItem }) {
+  const content = (
+    <>
+      {item.thumbnail ? (
+        <div className="relative size-14 overflow-hidden rounded-2xl bg-primary">
+          <Image src={item.thumbnail} alt="" fill sizes="56px" className="object-cover" />
+        </div>
+      ) : (
+        <div className="flex size-14 items-center justify-center rounded-2xl bg-primary text-white">
+          <ContentIcon name={item.icon} className="size-6" />
+        </div>
+      )}
+      <h3 className="font-display text-lg text-ink">{item.title}</h3>
+      {item.description && <p className="text-sm text-ink-soft">{item.description}</p>}
+    </>
+  );
+
+  if (item.link) {
+    return (
+      <Link href={item.link} className="flex flex-col items-center gap-3 text-center">
+        {content}
+      </Link>
+    );
+  }
+
+  return <div className="flex flex-col items-center gap-3 text-center">{content}</div>;
 }
