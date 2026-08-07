@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { getMenu, getPublicSettings } from "@/lib/api/queries/content";
-import { NewsletterForm } from "@/components/layout/newsletter-form";
 import { SocialLinks } from "@/components/layout/social-links";
 import { Logo } from "@/components/layout/logo";
 import { Container } from "@/components/ui/container";
@@ -23,7 +22,7 @@ export async function Footer() {
     <footer className="bg-primary-dark text-white/80">
       <Container className="grid grid-cols-2 gap-10 py-16 sm:grid-cols-2 lg:grid-cols-5">
         <div className="col-span-2 flex flex-col gap-4 lg:col-span-1">
-          <Logo siteName={siteName} logoUrl={settings?.site_logo} variant="light" />
+          <Logo siteName={siteName} logoUrl={settings?.site_logo} variant="dark" />
           <p className="max-w-xs text-sm text-white/60">
             Dermatologically tested, thoughtfully formulated baby care — made for tiny, sensitive skin.
           </p>
@@ -65,9 +64,8 @@ export async function Footer() {
         </div>
 
         <div className="col-span-2 flex flex-col gap-4 sm:col-span-2 lg:col-span-1">
-          <h3 className="text-sm font-semibold text-white">Newsletter</h3>
-          <NewsletterForm />
-          <div className="flex flex-col gap-2 pt-2 text-sm text-white/60">
+          <h3 className="text-sm font-semibold text-white">Get in Touch</h3>
+          <div className="flex flex-col gap-2 text-sm text-white/60">
             {settings?.site_email && (
               <a href={`mailto:${settings.site_email}`} className="flex items-center gap-2 hover:text-white">
                 <Mail className="size-4" /> {settings.site_email}

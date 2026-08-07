@@ -44,7 +44,7 @@ export function SocialLinks({
   if (links.length === 0) return null;
 
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-nowrap gap-2">
       {links.map((link) => (
         <a
           key={link.key}

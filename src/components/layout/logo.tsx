@@ -20,7 +20,7 @@ export function Logo({ siteName, logoUrl, className, variant = "light" }: LogoPr
           alt={siteName}
           width={140}
           height={40}
-          className="h-19 w-auto object-contain"
+          className={cn("h-19 w-auto object-contain", variant === "dark" && "brightness-0 invert")}
           priority
         />
       ) : (
