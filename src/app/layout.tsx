@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Plus_Jakarta_Sans } from "next/font/google";
+import { Nunito, Plus_Jakarta_Sans } from "next/font/google";
 import { QueryProvider } from "@/lib/providers/query-provider";
 import { CartProvider } from "@/lib/providers/cart-provider";
 import { ToastProvider } from "@/components/ui/toast";
@@ -9,10 +9,9 @@ import { getPublicSettings } from "@/lib/api/queries/content";
 import { SITE_URL } from "@/lib/constants";
 import "./globals.css";
 
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
+const nunito = Nunito({
+  variable: "--font-nunito",
   subsets: ["latin"],
-  axes: ["opsz", "SOFT", "WONK"],
 });
 
 const jakarta = Plus_Jakarta_Sans({
@@ -43,7 +42,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} ${jakarta.variable} h-full antialiased`}
+      className={`${nunito.variable} ${jakarta.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <QueryProvider>
