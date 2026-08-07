@@ -23,7 +23,12 @@ export async function Footer() {
     <footer className="bg-primary-dark text-white/80">
       <Container className="grid grid-cols-2 gap-10 py-16 sm:grid-cols-2 lg:grid-cols-5">
         <div className="col-span-2 flex flex-col gap-4 lg:col-span-1">
-          <Logo siteName={siteName} logoUrl={settings?.site_logo} variant="light" />
+          <Logo
+            siteName={siteName}
+            logoUrl={settings?.site_logo}
+            variant="light"
+            imgStyle={{ filter: "brightness(100)" }}
+          />
           <p className="max-w-xs text-sm text-white/60">
             Dermatologically tested, thoughtfully formulated baby care — made for tiny, sensitive skin.
           </p>
