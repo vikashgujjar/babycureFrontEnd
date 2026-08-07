@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
-import { getCategories } from "@/lib/api/queries/catalog";
 import { getMenu, getPublicSettings } from "@/lib/api/queries/content";
 import { NewsletterForm } from "@/components/layout/newsletter-form";
 import { SocialLinks } from "@/components/layout/social-links";
@@ -10,8 +9,7 @@ import { Container } from "@/components/ui/container";
 const POLICY_PATHS = ["/privacy-policy", "/terms-conditions", "/shipping-policy", "/refund-policy"];
 
 export async function Footer() {
-  const [categories, footerMenu, settings] = await Promise.all([
-    getCategories().catch(() => []),
+  const [footerMenu, settings] = await Promise.all([
     getMenu("footer").catch(() => null),
     getPublicSettings().catch(() => null),
   ]);
@@ -29,21 +27,7 @@ export async function Footer() {
           <p className="max-w-xs text-sm text-white/60">
             Dermatologically tested, thoughtfully formulated baby care — made for tiny, sensitive skin.
           </p>
-          <SocialLinks social={settings?.social ?? {}} />
         </div>
-
-        <nav className="flex flex-col gap-3">
-          <h3 className="text-sm font-semibold text-white">Products</h3>
-          {categories.slice(0, 6).map((category) => (
-            <Link
-              key={category.id}
-              href={`/category/${category.slug}`}
-              className="text-sm text-white/60 transition-colors hover:text-white"
-            >
-              {category.name}
-            </Link>
-          ))}
-        </nav>
 
         <nav className="flex flex-col gap-3">
           <h3 className="text-sm font-semibold text-white">Quick Links</h3>
@@ -58,19 +42,30 @@ export async function Footer() {
         </nav>
 
         <nav className="flex flex-col gap-3">
-          <h3 className="text-sm font-semibold text-white">Policies</h3>
+          <h3 className="text-sm font-semibold text-white">Customer Care</h3>
+          <Link href="/contact-us" className="text-sm text-white/60 transition-colors hover:text-white">
+            Contact Us
+          </Link>
           {policyLinks.map((item) => (
             <Link key={item.url} href={item.url} className="text-sm text-white/60 transition-colors hover:text-white">
               {item.label}
             </Link>
           ))}
+          <Link href="/faq" className="text-sm text-white/60 transition-colors hover:text-white">
+            FAQ&apos;s
+          </Link>
           <Link href="/order/track" className="text-sm text-white/60 transition-colors hover:text-white">
             Track Order
           </Link>
         </nav>
 
+        <div className="flex flex-col gap-3">
+          <h3 className="text-sm font-semibold text-white">Follow Us</h3>
+          <SocialLinks social={settings?.social ?? {}} whatsappNumber={settings?.whatsapp_number} />
+        </div>
+
         <div className="col-span-2 flex flex-col gap-4 sm:col-span-2 lg:col-span-1">
-          <h3 className="text-sm font-semibold text-white">Stay in the loop</h3>
+          <h3 className="text-sm font-semibold text-white">Newsletter</h3>
           <NewsletterForm />
           <div className="flex flex-col gap-2 pt-2 text-sm text-white/60">
             {settings?.site_email && (

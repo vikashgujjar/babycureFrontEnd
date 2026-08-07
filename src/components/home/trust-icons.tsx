@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/home/section-heading";
 import { ContentIcon } from "@/lib/utils/dynamic-icon";
@@ -16,9 +17,15 @@ export function TrustIcons({ title, items }: { title: string | null; items: Home
               key={item.id}
               className="flex w-32 shrink-0 flex-col items-center gap-3 text-center sm:w-auto"
             >
-              <div className="flex size-14 items-center justify-center rounded-full bg-primary-light text-primary-dark">
-                <ContentIcon name={item.icon} className="size-6" />
-              </div>
+              {item.thumbnail ? (
+                <div className="relative size-14 shrink-0 overflow-hidden rounded-full bg-primary-light">
+                  <Image src={item.thumbnail} alt="" fill sizes="56px" className="object-cover" />
+                </div>
+              ) : (
+                <div className="flex size-14 items-center justify-center rounded-full bg-primary-light text-primary-dark">
+                  <ContentIcon name={item.icon} className="size-6" />
+                </div>
+              )}
               <span className="text-sm font-medium text-ink">{item.title}</span>
             </div>
           ))}

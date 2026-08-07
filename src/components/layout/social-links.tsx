@@ -4,6 +4,7 @@ import {
   LinkedinIcon,
   PinterestIcon,
   TwitterIcon,
+  WhatsappIcon,
   YoutubeIcon,
 } from "@/components/icons/social-icons";
 import type { PublicSettings } from "@/lib/types";
@@ -20,10 +21,25 @@ const PLATFORMS: Record<
   pinterest_url: { label: "Pinterest", icon: (p) => <PinterestIcon {...p} /> },
 };
 
-export function SocialLinks({ social }: { social: PublicSettings["social"] }) {
+export function SocialLinks({
+  social,
+  whatsappNumber,
+}: {
+  social: PublicSettings["social"];
+  whatsappNumber?: string | null;
+}) {
   const links = (Object.keys(PLATFORMS) as (keyof PublicSettings["social"])[])
     .map((key) => ({ key, url: social[key], ...PLATFORMS[key] }))
     .filter((link) => link.url);
+
+  if (whatsappNumber) {
+    links.push({
+      key: "whatsapp_url" as keyof PublicSettings["social"],
+      url: `https://wa.me/${whatsappNumber.replace(/\D/g, "")}`,
+      label: "WhatsApp",
+      icon: (p) => <WhatsappIcon {...p} />,
+    });
+  }
 
   if (links.length === 0) return null;
 
