@@ -7,7 +7,6 @@ import type { Swiper as SwiperType } from "swiper";
 import { Container } from "@/components/ui/container";
 import { Rating } from "@/components/ui/rating";
 import { Carousel, CarouselSlide } from "@/components/ui/carousel";
-import { Logo } from "@/components/layout/logo";
 import type { Testimonial } from "@/lib/types";
 
 function Divider() {
@@ -38,15 +37,11 @@ export function Testimonials({
   title,
   subtitle,
   description,
-  siteName,
-  logoUrl,
   testimonials,
 }: {
   title: string | null;
   subtitle: string | null;
   description: string | null;
-  siteName: string;
-  logoUrl: string | null;
   testimonials: Testimonial[];
 }) {
   const swiperRef = useRef<SwiperType | null>(null);
@@ -87,7 +82,7 @@ export function Testimonials({
             <div className="flex items-center gap-2 text-sm">
               <Star className="size-4 fill-warning text-warning" />
               <span className="font-semibold text-ink">{avgRating.toFixed(1)} average rating</span>
-              <span className="text-ink-soft">from parents who've tried us</span>
+              <span className="text-ink-soft">{"from parents who've tried us"}</span>
             </div>
           </div>
 

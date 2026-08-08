@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getHomepage, getPublicSettings, getSeoHome, getTestimonials } from "@/lib/api/queries/content";
+import { getHomepage, getSeoHome, getTestimonials } from "@/lib/api/queries/content";
 import { toMetadata } from "@/lib/utils/seo";
 import { JsonLd } from "@/components/seo/json-ld";
 import { HeroBanner } from "@/components/home/hero-banner";
@@ -23,11 +23,10 @@ function findSection(sections: HomepageSection[], type: HomepageSection["type"])
 }
 
 export default async function HomePage() {
-  const [sections, seo, testimonials, settings] = await Promise.all([
+  const [sections, seo, testimonials] = await Promise.all([
     getHomepage().catch(() => [] as HomepageSection[]),
     getSeoHome().catch(() => null),
     getTestimonials({ featured: true }).catch(() => []),
-    getPublicSettings().catch(() => null),
   ]);
 
   const hero = findSection(sections, "hero_banner");
@@ -75,8 +74,6 @@ export default async function HomePage() {
           title={testimonialsSection.title}
           subtitle={testimonialsSection.subtitle}
           description={testimonialsSection.description}
-          siteName={settings?.site_name ?? "Babycure"}
-          logoUrl={settings?.site_logo ?? null}
           testimonials={testimonials}
         />
       )}
