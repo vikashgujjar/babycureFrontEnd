@@ -38,7 +38,7 @@ export function AccordionItem({ question, children, defaultOpen = false, classNa
             transition={{ duration: 0.2, ease: "easeOut" }}
             className="overflow-hidden"
           >
-            <div className="pt-3 text-sm leading-relaxed text-ink-soft">{children}</div>
+            <div className="whitespace-pre-line pt-3 text-sm leading-relaxed text-ink-soft">{children}</div>
           </motion.div>
         )}
       </AnimatePresence>
