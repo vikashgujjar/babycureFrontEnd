@@ -50,7 +50,9 @@ export default function OrderTrackingPage() {
                 <p className="text-xs text-ink-soft">Placed {formatDate(order.placed_at)}</p>
               </div>
               <OrderStatusBadge status={order.status} label={order.status_label} />
-              {order.shipment?.tracking_url ? (
+              {order.shipment?.delivered_at ? (
+                <span className="text-sm font-medium text-ink">Delivered {formatDate(order.shipment.delivered_at)}</span>
+              ) : order.shipment?.tracking_url ? (
                 <a
                   href={order.shipment.tracking_url}
                   target="_blank"

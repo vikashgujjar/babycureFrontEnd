@@ -27,7 +27,15 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
         <OrderStatusBadge status={order.status} label={order.status_label} />
       </div>
 
-      {order.shipment?.tracking_url && (
+      {order.shipment?.delivered_at ? (
+        <Card className="p-5">
+          <p className="font-medium text-ink">Delivered</p>
+          <p className="text-sm text-ink-soft">
+            Your order was delivered on {formatDate(order.shipment.delivered_at)}
+            {order.shipment.courier_name ? ` via ${order.shipment.courier_name}` : ""}.
+          </p>
+        </Card>
+      ) : order.shipment?.tracking_url ? (
         <Card className="flex items-center justify-between gap-4 p-5">
           <div>
             <p className="font-medium text-ink">{order.shipment.courier_name ?? "Shipment"} in transit</p>
@@ -42,7 +50,14 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
             Track Package <ExternalLink className="size-3.5" />
           </Link>
         </Card>
-      )}
+      ) : order.shipment?.last_error ? (
+        <Card className="p-5">
+          <p className="font-medium text-ink">We&apos;re working on shipping this</p>
+          <p className="text-sm text-ink-soft">
+            There was a hiccup preparing your shipment — our team has been notified and will sort it out shortly.
+          </p>
+        </Card>
+      ) : null}
 
       <Card className="p-5">
         <h2 className="mb-4 font-medium text-ink">Items</h2>

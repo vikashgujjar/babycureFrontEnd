@@ -114,10 +114,19 @@ export interface Order {
   items: OrderItem[];
   timeline: OrderTimelineEntry[];
   shipment?: {
+    shiprocket_order_id: number | null;
     awb_code: string | null;
     courier_name: string | null;
+    courier_company_id: string | null;
     tracking_url: string | null;
+    tracking_available: boolean;
     status: string | null;
+    shipment_created_at: string | null;
+    awb_assigned_at: string | null;
+    shipped_at: string | null;
+    delivered_at: string | null;
+    last_error: string | null;
+    retry_count: number;
   } | null;
 }
 
