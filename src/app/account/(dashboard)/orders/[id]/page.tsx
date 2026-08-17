@@ -6,9 +6,22 @@ import { ExternalLink } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Loader } from "@/components/ui/loader";
 import { EmptyState } from "@/components/ui/empty-state";
+import { Badge, type BadgeVariant } from "@/components/ui/badge";
 import { OrderStatusBadge } from "@/components/account/order-status-badge";
 import { useOrder } from "@/lib/api/mutations/orders";
 import { formatDate, formatPrice } from "@/lib/utils/format";
+
+const PAYMENT_BADGE_VARIANT: Record<string, BadgeVariant> = {
+  pending: "warning",
+  success: "success",
+  failed: "danger",
+  refunded: "warning",
+};
+
+const GATEWAY_LABEL: Record<string, string> = {
+  cod: "Cash on Delivery",
+  razorpay: "Razorpay",
+};
 
 export default function OrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -100,6 +113,16 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
             <dt className="text-ink">Total</dt>
             <dd className="text-ink">{formatPrice(order.total)}</dd>
           </div>
+          {order.payment && (
+            <div className="mt-2 flex items-center justify-between border-t border-line pt-2">
+              <dt className="text-ink-soft">Payment ({GATEWAY_LABEL[order.payment.gateway] ?? order.payment.gateway})</dt>
+              <dd>
+                <Badge variant={PAYMENT_BADGE_VARIANT[order.payment.status] ?? "outline"}>
+                  {order.payment.status_label}
+                </Badge>
+              </dd>
+            </div>
+          )}
         </dl>
       </Card>
 

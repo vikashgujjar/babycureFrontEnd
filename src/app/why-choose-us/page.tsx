@@ -9,12 +9,12 @@ import { CmsPageHero } from "@/components/cms/cms-page-hero";
 import { CmsContentReveal } from "@/components/cms/cms-content-reveal";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const result = await getCmsPageBySlug("about-us").catch(() => null);
-  return toMetadata(result?.seo, "About Us");
+  const result = await getCmsPageBySlug("why-choose-us").catch(() => null);
+  return toMetadata(result?.seo, "Why Choose Baby Cure");
 }
 
-export default async function AboutUsPage() {
-  const result = await getCmsPageBySlug("about-us").catch(() => null);
+export default async function WhyChooseUsPage() {
+  const result = await getCmsPageBySlug("why-choose-us").catch(() => null);
 
   if (!result) notFound();
 
@@ -24,7 +24,7 @@ export default async function AboutUsPage() {
     <>
       <JsonLd data={seo.schema} />
       <article>
-        <CmsPageHero kicker="Our Story" title={page.title} tagline={page.excerpt} />
+        <CmsPageHero kicker="Why Choose Us" title={page.title} tagline={page.excerpt} />
 
         {page.featured_image && (
           <div className="relative mx-auto mt-10 aspect-[21/9] w-full max-w-5xl overflow-hidden rounded-3xl px-4 sm:px-6 lg:px-8">

@@ -114,7 +114,10 @@ export interface Order {
   items: OrderItem[];
   timeline: OrderTimelineEntry[];
   shipment?: {
+    // Admin-only fields — always null on the customer storefront.
     shiprocket_order_id: number | null;
+    last_error: string | null;
+    retry_count: number | null;
     awb_code: string | null;
     courier_name: string | null;
     courier_company_id: string | null;
@@ -125,9 +128,33 @@ export interface Order {
     awb_assigned_at: string | null;
     shipped_at: string | null;
     delivered_at: string | null;
-    last_error: string | null;
-    retry_count: number;
   } | null;
+  payment?: {
+    gateway: string;
+    status: string;
+    status_label: string;
+    transaction_reference: string | null;
+    amount: string;
+    created_at: string;
+  } | null;
+}
+
+export interface OrderPayment {
+  id: number;
+  order_id: number;
+  order_number: string | null;
+  gateway: string;
+  transaction_reference: string | null;
+  amount: string;
+  status: string;
+  /** Razorpay's public Key ID, present only while a Razorpay payment is awaiting confirmation. */
+  key_id: string | null;
+  created_at: string;
+}
+
+export interface PlaceOrderResponse {
+  order: Order;
+  payment: OrderPayment | null;
 }
 
 export interface PlaceOrderPayload {

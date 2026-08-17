@@ -89,6 +89,12 @@ body {
   background: var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-sans);
+  /* Safety net: nothing should ever cause horizontal scroll on the page,
+     but a stray full-bleed/negative-margin element is an easy way to
+     introduce a few px of overflow (e.g. 100vw can be wider than the
+     visible viewport when a scrollbar is present) — this guards against
+     that class of bug without needing to hunt down every future case. */
+  overflow-x: hidden;
 }
 
 h1, h2, h3, h4 {
@@ -123,6 +129,22 @@ h1, h2, h3, h4 {
 .swiper-pagination-bullet-active {
   background: var(--color-primary) !important;
   opacity: 1 !important;
+}
+
+@keyframes heroFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-hero-in {
+  animation: heroFadeUp 0.7s ease-out both;
 }
 
 /* Typography for backend-authored HTML (CMS pages, product descriptions) —
@@ -171,4 +193,350 @@ h1, h2, h3, h4 {
 .cms-content strong {
   color: var(--color-ink);
   font-weight: 600;
+}
+
+/* About Us page — editorial treatment layered on top of .cms-content. The
+   content HTML opts into these layouts via specific wrapper classes
+   (.about-lead, .about-offer-grid, .about-promise-grid + -card, .about-mv-split
+   + -panel, .about-closing-band, .about-tagline) — still one plain HTML
+   blob the admin edits in the CMS Pages textarea, just structured enough
+   for CSS to do the rest. Scroll-reveal motion is applied by
+   AboutContentReveal (a small client component) toggling .in-view on each
+   direct child of .about-content as it enters the viewport. */
+.about-content > * {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.about-content > *.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.about-content h2 {
+  padding-bottom: 0.5rem;
+  font-size: 1.75rem;
+}
+
+.about-content h2::after {
+  content: "";
+  display: block;
+  width: 3rem;
+  height: 3px;
+  margin-top: 0.6rem;
+  border-radius: 999px;
+  background: var(--color-primary);
+}
+
+.about-content .about-lead {
+  font-size: 1.15rem;
+  color: var(--color-ink);
+}
+
+/* Plain checklist — used by "Why Choose Baby Cure?" */
+.about-content ul {
+  display: grid;
+  gap: 0.75rem;
+  padding-left: 0;
+  list-style: none;
+}
+
+@media (min-width: 640px) {
+  .about-content ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.about-content ul li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background: var(--color-sand);
+}
+
+.about-content ul li::before {
+  content: "\2713";
+  flex-shrink: 0;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+/* Pull-quote — a single emphasized line mid-narrative */
+.about-content .about-pullquote {
+  max-width: 34rem;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding: 0.25rem 0;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-style: italic;
+  color: var(--color-primary-dark);
+  text-align: center;
+}
+
+/* Label-only pill grid — "Core Values", "Our Commitments", closing moments */
+.about-content .about-badge-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  padding-left: 0;
+  list-style: none;
+  margin-top: 1.25em;
+}
+
+.about-content .about-badge-grid li {
+  padding: 0.6rem 1.25rem;
+  border-radius: 999px;
+  background: var(--color-accent-light);
+  color: var(--color-accent-dark);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Ingredient spotlight cards — "Featured Ingredients" */
+.about-content .about-ingredient-grid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.25em;
+}
+
+@media (min-width: 640px) {
+  .about-content .about-ingredient-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.about-content .about-ingredient-card {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1.5rem;
+  border-radius: 1.25rem;
+  background: var(--color-accent-light);
+}
+
+.about-content .about-ingredient-card::before {
+  content: "";
+  flex-shrink: 0;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 999px;
+  background-color: var(--color-accent);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 2.7 17.5 9.2a7.5 7.5 0 1 1-11 0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 50%;
+}
+
+.about-content .about-ingredient-card h3 {
+  margin-top: 0 !important;
+  color: var(--color-accent-dark);
+}
+
+.about-content .about-ingredient-card p {
+  margin-top: 0.3em !important;
+  font-size: 0.95rem;
+}
+
+/* Bento tile grid — "What We Offer" */
+.about-content .about-offer-grid {
+  display: grid;
+  gap: 1rem;
+  padding-left: 0;
+  list-style: none;
+  margin-top: 1.25em;
+}
+
+@media (min-width: 640px) {
+  .about-content .about-offer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .about-content .about-offer-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.about-content .about-offer-grid li {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1.35rem 1.1rem;
+  border-radius: 1.1rem;
+  background: var(--color-primary-light);
+  color: var(--color-ink);
+  font-weight: 600;
+  font-size: 0.92rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.about-content .about-offer-grid li:nth-child(even) {
+  background: var(--color-accent-light);
+}
+
+.about-content .about-offer-grid li::before {
+  content: "";
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  background-color: var(--color-primary);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 55%;
+}
+
+.about-content .about-offer-grid li:nth-child(even)::before {
+  background-color: var(--color-accent);
+}
+
+.about-content .about-offer-grid li:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 28px -16px rgba(2, 79, 235, 0.35);
+}
+
+/* Ghost-numbered cards — "Our Promise" */
+.about-content .about-promise-grid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.25em;
+}
+
+@media (min-width: 640px) {
+  .about-content .about-promise-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.about-content .about-promise-card {
+  position: relative;
+  overflow: hidden;
+  padding: 1.5rem;
+  border-radius: 1.25rem;
+  background: var(--color-primary-light);
+}
+
+.about-content .about-promise-index {
+  position: absolute;
+  top: -0.75rem;
+  right: 0.75rem;
+  z-index: 0;
+  font-family: var(--font-display);
+  font-size: 3.75rem;
+  font-weight: 800;
+  line-height: 1;
+  color: rgba(2, 79, 235, 0.12);
+}
+
+.about-content .about-promise-card h3 {
+  position: relative;
+  z-index: 1;
+  margin-top: 0 !important;
+  color: var(--color-primary-dark);
+}
+
+.about-content .about-promise-card p {
+  position: relative;
+  z-index: 1;
+  margin-top: 0.4em !important;
+  font-size: 0.95rem;
+}
+
+/* Color-split panels — "Our Mission" / "Our Vision" */
+.about-content .about-mv-split {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 1.25em !important;
+}
+
+@media (min-width: 768px) {
+  .about-content .about-mv-split {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.about-content .about-mv-panel {
+  padding: 2rem;
+  border-radius: 1.5rem;
+}
+
+.about-content .about-mv-panel h2::after {
+  margin-left: 0;
+}
+
+.about-content .about-mv-mission {
+  background: var(--color-sand);
+}
+
+.about-content .about-mv-vision {
+  background: var(--color-primary-dark);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.about-content .about-mv-vision h2 {
+  color: #fff;
+}
+
+.about-content .about-mv-vision h2::after {
+  background: rgba(255, 255, 255, 0.55);
+}
+
+/* Closing band — a light, airy card rather than a full-bleed dark block.
+   Deliberately NOT full-bleed (no 100vw/negative-margin breakout): that
+   technique is a common cause of page-level horizontal scroll, since 100vw
+   can be wider than the visible viewport once a scrollbar is present. */
+.about-content .about-closing-band {
+  margin-top: 3rem !important;
+  padding: 3rem 1.75rem;
+  border-radius: 2rem;
+  background: linear-gradient(135deg, var(--color-sand), var(--color-primary-light));
+  text-align: center;
+}
+
+.about-content .about-closing-band h2 {
+  color: var(--color-ink);
+}
+
+.about-content .about-closing-band h2::after {
+  margin-left: auto;
+  margin-right: auto;
+  background: var(--color-primary);
+}
+
+.about-content .about-closing-band > p {
+  color: var(--color-ink-soft);
+  max-width: 34rem;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.about-content .about-tagline {
+  margin-top: 1.25rem !important;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--color-primary-dark);
+}
+
+.about-content .about-cta-button {
+  display: inline-block;
+  margin-top: 1.75rem !important;
+  padding: 0.8rem 2.25rem;
+  border-radius: 999px;
+  background: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.about-content .about-cta-button:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-2px);
 }
