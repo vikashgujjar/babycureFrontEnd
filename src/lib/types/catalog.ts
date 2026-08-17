@@ -103,6 +103,10 @@ export interface Product {
   brand: { id: number; name: string; slug: string } | null;
   short_description: string | null;
   description: string | null;
+  key_features: string[];
+  how_to_use: string | null;
+  safety_information: string | null;
+  specifications: { label: string; value: string }[];
   price: string;
   discount_price: string | null;
   effective_price: number;

@@ -8,6 +8,7 @@ import { buildProductSchema } from "@/lib/utils/product-schema";
 import { JsonLd } from "@/components/seo/json-ld";
 import { Container } from "@/components/ui/container";
 import { ProductDetail } from "@/components/product/product-detail";
+import { ProductInfoSections } from "@/components/product/product-info-sections";
 import { ProductReviews } from "@/components/product/product-reviews";
 import { RecentlyViewed } from "@/components/product/recently-viewed";
 import { ProductGrid } from "@/components/product/product-grid";
@@ -69,11 +70,20 @@ export default async function ProductPage({ params }: ProductPageProps) {
         <ProductDetail product={product} reviewSummary={summary} />
       </Container>
 
-      <Container className="border-t border-line py-14">
-        {product.description && (
+      {product.description && (
+        <Container className="border-t border-line py-14">
           <div className="cms-content max-w-3xl" dangerouslySetInnerHTML={{ __html: product.description }} />
-        )}
-      </Container>
+        </Container>
+      )}
+
+      {(product.key_features.length > 0 ||
+        product.how_to_use ||
+        product.specifications.length > 0 ||
+        product.safety_information) && (
+        <Container className="border-t border-line py-14">
+          <ProductInfoSections product={product} />
+        </Container>
+      )}
 
       <Container id="reviews" className="border-t border-line py-14">
         <h2 className="mb-8 font-display text-2xl text-ink">Customer Reviews</h2>

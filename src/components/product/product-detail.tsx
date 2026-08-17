@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { CheckCircle2, XCircle } from "lucide-react";
+import { CheckCircle2, XCircle, Truck, ShieldCheck, RotateCcw, type LucideIcon } from "lucide-react";
 import { ProductGallery } from "@/components/product/product-gallery";
 import { VariantSelector } from "@/components/product/variant-selector";
 import { AddToCartButton } from "@/components/product/add-to-cart-button";
@@ -108,6 +108,12 @@ export function ProductDetail({
           <span className="text-sm text-ink-soft">SKU: {selectedVariant?.sku ?? product.sku}</span>
         </div>
 
+        <div className="grid grid-cols-3 gap-2 border-t border-line pt-4">
+          <TrustBadge icon={Truck} label="Fast Delivery" />
+          <TrustBadge icon={ShieldCheck} label="Secure Payment" />
+          <TrustBadge icon={RotateCcw} label="Easy Returns" />
+        </div>
+
         {product.attribute_values && product.attribute_values.length > 0 && (
           <dl className="mt-2 grid grid-cols-2 gap-x-6 gap-y-2 border-t border-line pt-4 text-sm">
             {product.attribute_values.map((attr) => (
@@ -123,6 +129,15 @@ export function ProductDetail({
           {reviewSummary.count > 0 ? `See all ${reviewSummary.count} reviews` : "Be the first to review"}
         </Link>
       </div>
+    </div>
+  );
+}
+
+function TrustBadge({ icon: Icon, label }: { icon: LucideIcon; label: string }) {
+  return (
+    <div className="flex flex-col items-center gap-1.5 rounded-xl bg-sand px-2 py-3 text-center">
+      <Icon className="size-5 text-primary-dark" strokeWidth={1.75} />
+      <span className="text-[11px] leading-tight font-medium text-ink-soft">{label}</span>
     </div>
   );
 }
